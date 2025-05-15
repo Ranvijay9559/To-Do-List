@@ -1,0 +1,141 @@
+/* === Reset & Base === */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background: #f4f6f8;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.main-container {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* === Form === */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="datetime-local"] {
+  padding: 10px;
+  font-size: 14px;
+  width: 340px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="datetime-local"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button#add-button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button#add-button:hover {
+  background-color: #0056b3;
+}
+
+/* === Task List === */
+ul#todo-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  background: #fdfdfd;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Checkbox + Task Row */
+li > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Task Text */
+.task-text {
+  font-size: 16px;
+  color: #2c3e50;
+  font-weight: 500;
+  flex-grow: 1;
+}
+
+/* Completed Task */
+.completed {
+  text-decoration: line-through;
+  color: #7f8c8d;
+}
+
+/* Deadline Text */
+.deadline {
+  font-size: 13px;
+  font-style: italic;
+  color: green;
+  margin-left: 28px;
+}
+
+/* Overdue Deadline */
+.overdue {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+/* Checkbox */
+li input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+/* Delete Button */
+li button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+li button:hover {
+  background-color: #b52a36;
+}
