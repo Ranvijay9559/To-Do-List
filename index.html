@@ -13,6 +13,12 @@
         <div class="input-data">
           <input type="text" id="todo-input" placeholder="Add a task" required />
           <input type="datetime-local" id="deadline-input" />
+          <select id="priority-select" required>
+            <option value="" disabled selected>Select priority</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
         </div>
         <button type="submit" id="add-button">Add</button>
       </form>

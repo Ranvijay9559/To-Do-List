@@ -2,6 +2,7 @@ const form = document.getElementById('todo-form');
 const input = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 const deadlineInput = document.getElementById('deadline-input');
+const prioritySelect = document.getElementById('priority-select');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 tasks.forEach(task => addTaskToDom(task));
@@ -10,6 +11,7 @@ form.addEventListener('submit', function(e) {
   e.preventDefault();
   const taskText = input.value.trim();
   const deadline = deadlineInput.value;
+  const priority = prioritySelect.value;
 
   if (taskText !== "") {
     const task = {
@@ -17,13 +19,15 @@ form.addEventListener('submit', function(e) {
       text: taskText,
       timeStamp: new Date().toISOString(),
       completed: false,
-      deadline: deadline
+      deadline: deadline,
+      priority: priority
     };
     tasks.push(task);
     saveTasks();
     addTaskToDom(task);
     input.value = "";
     deadlineInput.value = "";
+    prioritySelect.selectedIndex = 0;
   }
 });
 
@@ -80,6 +84,14 @@ function addTaskToDom(task) {
     saveTasks();
   });
 
+  const priority = task.priority || 'low';
+
+  const priorityLabel = document.createElement('span');
+  priorityLabel.textContent = `Priority: ${priority}`;
+  priorityLabel.classList.add('priority', priority.toLowerCase());
+  li.classList.add(priority.toLowerCase());
+
+  li.appendChild(priorityLabel);
   li.appendChild(checkbox);
   li.appendChild(taskText);
   if (task.deadline) li.appendChild(deadlineSpan);

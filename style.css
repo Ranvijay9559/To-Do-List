@@ -139,3 +139,30 @@ li button {
 li button:hover {
   background-color: #b52a36;
 }
+
+.priority {
+  font-size: 13px;
+  font-weight: bold;
+  margin-left: 28px;
+  display: block;
+}
+
+.priority.high {
+  color: #e74c3c; /* red */
+}
+
+.priority.medium {
+  color: #f39c12; /* orange */
+}
+
+.priority.low {
+  color: #27ae60; /* green */
+}
+
+/* Style for <select> */
+select#priority-select {
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
