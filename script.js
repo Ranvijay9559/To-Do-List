@@ -3,9 +3,10 @@ const input = document.getElementById('todo-input');
 const todoList = document.getElementById('todo-list');
 const deadlineInput = document.getElementById('deadline-input');
 const prioritySelect = document.getElementById('priority-select');
+const filterSelect = document.getElementById('filter-select');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-tasks.forEach(task => addTaskToDom(task));
+renderFilteredTasks('all');
 
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -97,6 +98,21 @@ function addTaskToDom(task) {
   if (task.deadline) li.appendChild(deadlineSpan);
   li.appendChild(deleteButton);
   todoList.appendChild(li);
+}
+
+filterSelect.addEventListener('change', function() {
+  renderFilteredTasks(filterSelect.value);
+});
+
+function renderFilteredTasks(filter) {
+  todoList.innerHTML = '<li class="todo-list-header"><h3>List</h3></li>';
+
+  tasks.forEach(task => {
+    const taskPriority = (task.priority || 'low').toLowerCase();
+    if(filter === "all" || taskPriority === filter) {
+      addTaskToDom(task);
+    }
+  })
 }
 
 function saveTasks() {

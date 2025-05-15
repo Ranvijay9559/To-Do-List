@@ -83,6 +83,11 @@ li {
   gap: 6px;
 }
 
+.todo-list-header{
+  text-align: center;
+  font-size: x-large;
+}
+
 /* Checkbox + Task Row */
 li > div {
   display: flex;
@@ -165,4 +170,24 @@ select#priority-select {
   font-size: 14px;
   border-radius: 6px;
   border: 1px solid #ccc;
+}
+
+.filter-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.filter-container label {
+  font-weight: bold;
+  color: #555;
+}
+
+#filter-select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }

@@ -22,7 +22,16 @@
         </div>
         <button type="submit" id="add-button">Add</button>
       </form>
-
+      <div class="filter-container">
+        <label for="filter-select">Filter by Priority:</label>
+        <select id="filter-select">
+            <option value="all">All</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+        </select>
+      </div>
+      
       <ul id="todo-list">
         <li class="todo-list-header"><h3>List</h3></li>
       </ul>
