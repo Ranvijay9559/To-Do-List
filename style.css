@@ -230,3 +230,25 @@ select#filter-select {
   font-weight: bold;
   color: #555;
 }
+
+/* Container for action buttons */
+.task-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+
+/* Edit Button */
+.edit-button {
+  background-color: #45a361;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.edit-button:hover {
+  background-color: #27b63a;
+}

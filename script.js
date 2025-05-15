@@ -93,6 +93,19 @@ function addTaskToDom(task) {
     }
   });
 
+  const actionsContainer = document.createElement('div');
+  actionsContainer.classList.add('task-actions');
+
+  const editButton = document.createElement('button');
+  editButton.textContent = 'Edit';
+  editButton.classList.add('edit-button');
+  editButton.style.marginLeft = 'auto';
+  editButton.addEventListener('click', () => {
+    handleEditTask(task, li);
+  });
+ 
+
+
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
   deleteButton.addEventListener('click', () => {
@@ -101,12 +114,14 @@ function addTaskToDom(task) {
     saveTasks();
   });
 
+  actionsContainer.appendChild(editButton);
   li.appendChild(row);
   li.appendChild(checkbox);
   li.appendChild(taskText);
   if (task.deadline) li.appendChild(deadlineSpan);
-  li.appendChild(deleteButton);
+  actionsContainer.appendChild(deleteButton);
   todoList.appendChild(li);
+  li.appendChild(actionsContainer);
 }
 
 filterSelect.addEventListener('change', function () {
@@ -126,4 +141,72 @@ function renderFilteredTasks(filter) {
 
 function saveTasks() {
   localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function handleEditTask(task, li) {
+  const currentTask = task.text;
+  const currentDeadline = task.deadline || '';
+  const currentPriority = task.priority || 'low';
+  const currentCategory = task.category || 'other';
+
+  li.innerHTML = '';
+
+  const textInput = document.createElement('input');
+  textInput.type = 'text';
+  textInput.value = currentTask;
+  textInput.style.flexGrow = '1';
+
+  const deadlineInput = document.createElement('input');
+  deadlineInput.type = 'datetime-local';
+  deadlineInput.value = currentDeadline;
+
+  const prioritySelect = document.createElement('select');
+  const priorities = ['low', 'medium', 'high'];
+  priorities.forEach(level => {
+    const option = document.createElement('option');
+    option.value = level;
+    option.textContent = level.charAt(0).toUpperCase() + level.slice(1);
+    if(level === currentPriority) {
+      option.selected = true;
+    }
+    prioritySelect.appendChild(option);
+  });
+
+  const categorySelect = document.createElement('select');
+  ['work', 'personal', 'study', 'other'].forEach(cat => {
+    const option = document.createElement('option');
+    option.value = cat;
+    option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+    if (cat === currentCategory) option.selected = true;
+    categorySelect.appendChild(option);
+  });
+
+  const saveButton = document.createElement('button');
+  saveButton.textContent = 'Save';
+  saveButton.style.backgroundColor = '#28a745';
+  saveButton.addEventListener('click', () => {
+    task.text = textInput.value;
+    task.deadline = deadlineInput.value;
+    task.priority = prioritySelect.value;
+    task.category = categorySelect.value;
+    saveTasks();
+    renderFilteredTasks(filterSelect.value);
+  });
+
+  const cancelButton = document.createElement('button');
+  cancelButton.textContent = 'Cancel';
+  cancelButton.style.backgroundColor = 'grey';
+  cancelButton.addEventListener('click', () => {
+    li.innerHTML = "";
+
+    renderFilteredTasks(filterSelect.value);
+  });
+
+  li.appendChild(textInput);
+  li.appendChild(deadlineInput);
+  li.appendChild(prioritySelect);
+  li.appendChild(categorySelect);
+  li.appendChild(saveButton);
+  li.appendChild(cancelButton);
+
 }
