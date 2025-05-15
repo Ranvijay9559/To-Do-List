@@ -35,18 +35,26 @@ form {
   margin-bottom: 20px;
 }
 
+.input-data {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 input[type="text"],
-input[type="datetime-local"] {
+input[type="datetime-local"],
+select {
   padding: 10px;
   font-size: 14px;
-  width: 340px;
+  width: 100%;
   border-radius: 6px;
   border: 1px solid #ccc;
   transition: 0.3s;
 }
 
 input[type="text"]:focus,
-input[type="datetime-local"]:focus {
+input[type="datetime-local"]:focus,
+select:focus {
   border-color: #007bff;
   outline: none;
 }
@@ -83,7 +91,7 @@ li {
   gap: 6px;
 }
 
-.todo-list-header{
+.todo-list-header {
   text-align: center;
   font-size: x-large;
 }
@@ -145,10 +153,18 @@ li button:hover {
   background-color: #b52a36;
 }
 
+/* === Priority + Category Row === */
+.priority-category-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 28px;
+}
+
+/* Priority Label */
 .priority {
   font-size: 13px;
   font-weight: bold;
-  margin-left: 28px;
   display: block;
 }
 
@@ -164,14 +180,44 @@ li button:hover {
   color: #27ae60; /* green */
 }
 
-/* Style for <select> */
-select#priority-select {
+/* Category Label */
+.category {
+  font-size: 13px;
+  font-weight: 500;
+  display: block;
+}
+
+/* Category Colors */
+.category.work {
+  color: #1e88e5; /* Blue */
+}
+
+.category.personal {
+  color: #e91e63; /* Pink */
+}
+
+.category.study {
+  color: #8e24aa; /* Purple */
+}
+
+.category.other {
+  color: #607d8b; /* Gray-blue */
+}
+
+/* Select Styling */
+select {
   padding: 10px;
   font-size: 14px;
   border-radius: 6px;
   border: 1px solid #ccc;
+  background: white;
 }
 
+select#filter-select {
+  padding: 6px 8px;
+}
+
+/* Filter container */
 .filter-container {
   display: flex;
   align-items: center;
@@ -183,11 +229,4 @@ select#priority-select {
 .filter-container label {
   font-weight: bold;
   color: #555;
-}
-
-#filter-select {
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
 }

@@ -4,15 +4,17 @@ const todoList = document.getElementById('todo-list');
 const deadlineInput = document.getElementById('deadline-input');
 const prioritySelect = document.getElementById('priority-select');
 const filterSelect = document.getElementById('filter-select');
+const catogorySelect = document.getElementById('category-select');
 
 let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
 renderFilteredTasks('all');
 
-form.addEventListener('submit', function(e) {
+form.addEventListener('submit', function (e) {
   e.preventDefault();
   const taskText = input.value.trim();
   const deadline = deadlineInput.value;
   const priority = prioritySelect.value;
+  const category = catogorySelect.value;
 
   if (taskText !== "") {
     const task = {
@@ -21,7 +23,8 @@ form.addEventListener('submit', function(e) {
       timeStamp: new Date().toISOString(),
       completed: false,
       deadline: deadline,
-      priority: priority
+      priority: priority,
+      category: category
     };
     tasks.push(task);
     saveTasks();
@@ -29,12 +32,30 @@ form.addEventListener('submit', function(e) {
     input.value = "";
     deadlineInput.value = "";
     prioritySelect.selectedIndex = 0;
+    catogorySelect.selectedIndex = 0;
   }
 });
 
 function addTaskToDom(task) {
   const li = document.createElement('li');
   li.setAttribute('data-id', task.id);
+
+  // Priority & Category row
+  const row = document.createElement('div');
+  row.classList.add('priority-category-row');
+
+  const priorityLabel = document.createElement('span');
+  const priority = task.priority || 'low';
+  priorityLabel.textContent = `Priority: ${priority}`;
+  priorityLabel.classList.add('priority', priority.toLowerCase());
+
+  const categoryLabel = document.createElement('span');
+  const category = task.category || 'other';
+  categoryLabel.textContent = `Category: ${category}`;
+  categoryLabel.classList.add('category', category.toLowerCase());
+
+  row.appendChild(priorityLabel);
+  row.appendChild(categoryLabel);
 
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
@@ -62,17 +83,12 @@ function addTaskToDom(task) {
     }
   }
 
-
   checkbox.addEventListener('change', () => {
     const taskId = li.getAttribute('data-id');
     const targetTask = tasks.find(t => t.id === taskId);
     if (targetTask) {
       targetTask.completed = checkbox.checked;
-      if (checkbox.checked) {
-        taskText.classList.add('completed');
-      } else {
-        taskText.classList.remove('completed');
-      }
+      taskText.classList.toggle('completed', checkbox.checked);
       saveTasks();
     }
   });
@@ -85,14 +101,7 @@ function addTaskToDom(task) {
     saveTasks();
   });
 
-  const priority = task.priority || 'low';
-
-  const priorityLabel = document.createElement('span');
-  priorityLabel.textContent = `Priority: ${priority}`;
-  priorityLabel.classList.add('priority', priority.toLowerCase());
-  li.classList.add(priority.toLowerCase());
-
-  li.appendChild(priorityLabel);
+  li.appendChild(row);
   li.appendChild(checkbox);
   li.appendChild(taskText);
   if (task.deadline) li.appendChild(deadlineSpan);
@@ -100,7 +109,7 @@ function addTaskToDom(task) {
   todoList.appendChild(li);
 }
 
-filterSelect.addEventListener('change', function() {
+filterSelect.addEventListener('change', function () {
   renderFilteredTasks(filterSelect.value);
 });
 
@@ -109,10 +118,10 @@ function renderFilteredTasks(filter) {
 
   tasks.forEach(task => {
     const taskPriority = (task.priority || 'low').toLowerCase();
-    if(filter === "all" || taskPriority === filter) {
+    if (filter === "all" || taskPriority === filter) {
       addTaskToDom(task);
     }
-  })
+  });
 }
 
 function saveTasks() {
