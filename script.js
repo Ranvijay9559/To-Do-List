@@ -6,8 +6,16 @@ const prioritySelect = document.getElementById('priority-select');
 const filterSelect = document.getElementById('filter-select');
 const catogorySelect = document.getElementById('category-select');
 
-let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let tasks = [];
 renderFilteredTasks('all');
+
+// Get tasks from backend
+fetch('http://localhost:5000/api/tasks')
+  .then(res => res.json())
+  .then(data => {
+    tasks = data;
+    renderFilteredTasks('all');
+  });
 
 form.addEventListener('submit', function (e) {
   e.preventDefault();
@@ -26,19 +34,26 @@ form.addEventListener('submit', function (e) {
       priority: priority,
       category: category
     };
-    tasks.push(task);
-    saveTasks();
-    addTaskToDom(task);
+    fetch('http://localhost:5000/api/tasks', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(task)
+    })
+    .then(res => res.json())
+    .then(newTask => {
+    tasks.push(newTask);
+    renderFilteredTasks(filterSelect.value);
     input.value = "";
     deadlineInput.value = "";
     prioritySelect.selectedIndex = 0;
     catogorySelect.selectedIndex = 0;
+    });
   }
 });
 
 function addTaskToDom(task) {
   const li = document.createElement('li');
-  li.setAttribute('data-id', task.id);
+  li.setAttribute('data-id', task._id || task.id);
 
   // Priority & Category row
   const row = document.createElement('div');
@@ -84,13 +99,14 @@ function addTaskToDom(task) {
   }
 
   checkbox.addEventListener('change', () => {
-    const taskId = li.getAttribute('data-id');
-    const targetTask = tasks.find(t => t.id === taskId);
-    if (targetTask) {
-      targetTask.completed = checkbox.checked;
+    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ completed: checkbox.checked })
+    }).then(() => {
+      task.completed = checkbox.checked;
       taskText.classList.toggle('completed', checkbox.checked);
-      saveTasks();
-    }
+    });
   });
 
   const actionsContainer = document.createElement('div');
@@ -104,14 +120,16 @@ function addTaskToDom(task) {
     handleEditTask(task, li);
   });
  
-
-
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
   deleteButton.addEventListener('click', () => {
-    li.remove();
-    tasks = tasks.filter(t => t.id !== task.id);
-    saveTasks();
+    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+      method: 'DELETE'
+    }).then(() => {
+      li.remove();
+      tasks = tasks.filter(t => t._id !== task._id);
+      renderFilteredTasks(filterSelect.value);
+    });
   });
 
   actionsContainer.appendChild(editButton);
@@ -139,17 +157,13 @@ function renderFilteredTasks(filter) {
   });
 }
 
-function saveTasks() {
-  localStorage.setItem('tasks', JSON.stringify(tasks));
-}
-
 function handleEditTask(task, li) {
+  li.innerHTML = '';
+
   const currentTask = task.text;
   const currentDeadline = task.deadline || '';
   const currentPriority = task.priority || 'low';
   const currentCategory = task.category || 'other';
-
-  li.innerHTML = '';
 
   const textInput = document.createElement('input');
   textInput.type = 'text';
@@ -185,12 +199,21 @@ function handleEditTask(task, li) {
   saveButton.textContent = 'Save';
   saveButton.style.backgroundColor = '#28a745';
   saveButton.addEventListener('click', () => {
-    task.text = textInput.value;
-    task.deadline = deadlineInput.value;
-    task.priority = prioritySelect.value;
-    task.category = categorySelect.value;
-    saveTasks();
-    renderFilteredTasks(filterSelect.value);
+    const updatedTask = {
+      text: textInput.value,
+      deadline: deadlineInput.value,
+      priority: prioritySelect.value,
+      category: categorySelect.value
+    };
+
+    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedTask)
+    }).then(() => {
+      Object.assign(task, updatedTask);
+      renderFilteredTasks(filterSelect.value);
+    });
   });
 
   const cancelButton = document.createElement('button');
