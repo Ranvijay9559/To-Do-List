@@ -10,7 +10,7 @@ let tasks = [];
 renderFilteredTasks('all');
 
 // Get tasks from backend
-fetch('http://localhost:5000/api/tasks')
+fetch('https://to-do-list-4nom.onrender.com/api/tasks')
   .then(res => res.json())
   .then(data => {
     tasks = data;
@@ -34,7 +34,7 @@ form.addEventListener('submit', function (e) {
       priority: priority,
       category: category
     };
-    fetch('http://localhost:5000/api/tasks', {
+    fetch('https://to-do-list-4nom.onrender.com/api/tasks', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(task)
@@ -99,7 +99,7 @@ function addTaskToDom(task) {
   }
 
   checkbox.addEventListener('change', () => {
-    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+    fetch(`https://to-do-list-4nom.onrender.com/api/tasks/${task._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ completed: checkbox.checked })
@@ -123,7 +123,7 @@ function addTaskToDom(task) {
   const deleteButton = document.createElement('button');
   deleteButton.textContent = 'Delete';
   deleteButton.addEventListener('click', () => {
-    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+    fetch(`https://to-do-list-4nom.onrender.com/api/tasks/${task._id}`, {
       method: 'DELETE'
     }).then(() => {
       li.remove();
@@ -206,7 +206,7 @@ function handleEditTask(task, li) {
       category: categorySelect.value
     };
 
-    fetch(`http://localhost:5000/api/tasks/${task._id}`, {
+    fetch(`https://to-do-list-4nom.onrender.com/api/tasks/${task._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updatedTask)
