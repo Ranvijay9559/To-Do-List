@@ -231,5 +231,4 @@ function handleEditTask(task, li) {
   li.appendChild(categorySelect);
   li.appendChild(saveButton);
   li.appendChild(cancelButton);
-
 }
